@@ -16,6 +16,7 @@ app.use(express.json());
 const empSchema = new mongoose.Schema({});
 const emp = new mongoose.model("emps", empSchema);
 
+
 app.get("/employee", async (req,res) => {
     // var data = [{name:"Anuj",salary: 25000},{ name: "samir", salary: 28000}]
     let data = await emp.find();
