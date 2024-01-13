@@ -13,8 +13,16 @@ mongoose.connect(conn_str)
 app.use(express.json());
 
 
-const empSchema = new mongoose.Schema({});
+const empSchema = new mongoose.Schema( {
+    name: String,
+    contact_number: Number,
+    address: String,
+    salary:Number,
+    employee_id:Number,
+    role: String
+});
 const emp = new mongoose.model("emps", empSchema);
+
 
 
 app.get("/employee", async (req,res) => {
@@ -22,6 +30,37 @@ app.get("/employee", async (req,res) => {
     let data = await emp.find();
     res.send(data);
 })
+
+
+
+// to delete data from record
+app.delete("/employee", async ( req, res) => {
+   // http://localhost:3000/employee?id=6587c84459d87998369f190a
+    let d_data = await emp.deleteOne({"_id": req.query['id']});
+	res.send(d_data);
+})
+
+
+// to post data from record // to insert data
+app.post("/employee", async ( req, res) => {
+
+    // doc = {
+    // "name": "pankaj new",
+    // "contact_number": "7262933811",
+    // "address": "mumbai",
+    // "salary": 50000,
+    // "employee_id": 98829,
+    // "role": "operations"  };
+
+    doc = req.body;
+    let u = await emp(doc);
+	let result = u.save();
+	res.send(doc);
+});
+
+
+
+
 
 app.listen(3000, () => {
 console.log("listening 3000...");

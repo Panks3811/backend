@@ -2,8 +2,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 
-
-<table class="table table-striped">
+<table class="table table-striped">-
     <thead>
         <tr>
             <th>Name</th>
@@ -19,9 +18,19 @@
 </table>
 
 
-
 <script>
-    url = `http://localhost:3000/employee`
+     url = `http://localhost:3000/employee`
+
+     function deleteEmp(id){
+       flag = confirm("Are you sure you want to delete the record")
+       if (flag==true){ 
+        fetch(`${url}?id=${id}`, {method: "DELETE"})
+        .then(res => res.json())
+        .then(res => {
+            window.location.reload()
+        })
+    }
+ }
     fetch(url)
     .then(res => res.json())
     .then(res => {
@@ -33,7 +42,10 @@
             <td>${res[i]['address']}</td>
             <td>${res[i]['contact_number']}</td>
             <td>${res[i]['salary']}</td>
-            <td><button class="btn btn-danger">Delete</button></td>
+            <td>
+                <button class="btn btn-danger" onclick="deleteEmp('${res[i]._id}')" >Delete</button>
+                <button class="btn btn-info" onclick="editEmp('${res[i]._id}')" >Edit</button>
+            </td>
         </tr>`
     }
         document.getElementById("records").innerHTML = output
