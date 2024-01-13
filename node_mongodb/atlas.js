@@ -31,6 +31,27 @@ app.get("/employee", async (req,res) => {
     res.send(data);
 })
 
+// fetch single document by id
+// https://localhost:3000/employee/6587d784915fa799c44f25bf
+app.get("/employee/:id", async (req,res) => {
+    console.log(req.params)
+    let data = await emp.find({_id: req.params['id']});
+    res.send(data[0]);
+})
+
+
+// update the document by id
+app.put("/employee", async ( req, res) => {
+
+	let u_data = await emp.updateOne({"_id": req.body.id}, {
+		"$set": {
+			"name" : req.body.name,
+			"salary" : req.body.salary
+		}
+	})
+	res.send(u_data);
+});
+
 
 
 // to delete data from record
